@@ -12,11 +12,25 @@ def signup(requests):
                 user = User.objects.create_user(requests.POST["username"], password = requests.POST["password1"])
                 auth.login(requests,user)
                 return redirect("home")
+        else:
+            return render(requests, "users/signup.html", {'error':"Passwords doesn't match"})
+
     else:
         return render(requests, "users/signup.html")
 
 def login(requests):
-    return render(requests, "users/login.html")
+    if requests.method == 'POST':
+        user = auth.authenticate(username=requests.POST["username"], password=requests.POST["password"])
+        if user is not None:
+            auth.login(requests, user)
+            return redirect('home')
+        else:
+            return render(requests, "users/login.html", {'error':'Username or password is invalid!'})
+    else:
+        return render(requests, "users/login.html")
+    
 # TODO need to add page 
 def logout(requests):
-    return render(requests, "users/logout.html")
+    if requests.method == 'POST':
+        auth.logout(requests)
+        return redirect('home')
