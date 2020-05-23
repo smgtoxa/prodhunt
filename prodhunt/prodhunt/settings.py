@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'prodhunt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'prodhunt',
+        'NAME': 'hunt3',
         'USER': 'postgres',
         'PASSWORD': '321672006',
         'HOST': 'localhost',
@@ -126,3 +126,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'prodhunt/static')]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
