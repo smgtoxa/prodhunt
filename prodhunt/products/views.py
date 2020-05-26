@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Product
 from django.utils import timezone
@@ -12,7 +12,7 @@ def create(requests):
                 product = Product()
                 product.title = requests.POST['title']
                 product.body = requests.POST['body']
-                if requests.POST['url'].startswith('http://') or requests.POST['url'].startswith('https://'): 
+                if requests.POST['url'].lower.startswith('http://') or requests.POST['url'].lower.startswith('https://'): 
                     product.urs = requests.POST['url']
                 else:
                     product.urs = 'http://' + requests.POST['url']
@@ -21,8 +21,14 @@ def create(requests):
                 product.pub_date = timezone.datetime.now()
                 product.hunter = requests.user
                 product.save()
-                return redirect('home')
+                return redirect('/products/' + str(product.id))
         else:
             return render(requests, 'products/create.html', {'error':'Not all fields are filled out!'})
     else:
         return render(requests, 'products/create.html')
+    
+    
+def detail(requests, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    return render(requests, 'products/detail.html', {'product':product})
+    
